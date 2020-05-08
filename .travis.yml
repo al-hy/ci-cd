@@ -3,12 +3,13 @@ language: generic
 
 #items to install
 services:
-    -docker
+    - docker
 
 before_install:
-    -docker build -t ahy94/docker-react -f Dockerfile.dev .
+    - docker build -t ahy94/docker-react -f Dockerfile.dev .
 
-#Contains all the commands that needs to be ran to run our test suite
+#Contains a
+ll the commands that needs to be ran to run our test suite
 #If a return code returns a status code other than 0, then travis will assume that the test failed
 script:
     - docker run -e CI=true ahy94/docker-react npm run test
