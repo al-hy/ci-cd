@@ -13,3 +13,23 @@ before_install:
 #If a return code returns a status code other than 0, then travis will assume that the test failed
 script:
     - docker run -e CI=true ahy94/docker-react npm run test
+
+#A series of command that tells travis CI on how to deploy out application on to AWS
+deploy:
+    #Travis CI comes preconfigured to deploy our applications to a handful of providers or hostig providers(i.e. AWS)
+    #by specifying elasticbeanstalk, we are telling Travis to automatically configure the configurations for elasticbeanstalk
+    provider: elasticbeanstalk
+    region: "us-east-2" #which region this elasticbeanstalk instance was created in. You must know!
+    app: "docker-react" #This is the app that you created on aws
+    env: "DockerReact-env"
+    bucket_name: "elasticbeanstalk-us-east-2-697748264580" #when travis decides to deply your code base. It's going to zip up allt he files into one file, and copy them into a s3 bucket, which is essentially a hard drive on aws. Once it is copies over, travis is going to notify elasticbeanstalk to re deploy the application.
+    bucket_path: "docker-react" #The path folder is created when it is first deployed. So supply the app name so that the deployment can create the folder on s3   
+    on:
+        branch: master #this essentially means everytime we push code to the master branch, that is when it is time to deploy.
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    #NOTE: We are going to need to supply the elasticbeanstalk access key and secret key so that travis has permissions to deploy 
+    #our app onto our aws instance. We do not want to explicitly place the keys in this yaml file because that will expose the key and allow anyone to access our instance
+    #We are going to take advtange of travis's secret environment functionality to store the keys. Stash this in travis-ci environment variables
+
+
