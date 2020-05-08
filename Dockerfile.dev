@@ -1,0 +1,10 @@
+#.dev is to indicate that this file is to be used in a development environment. Proudction environment will not include the .dev extension in the name
+FROM node:alpine
+WORKDIR '/app'
+
+COPY package.json . 
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "run", "start"]
