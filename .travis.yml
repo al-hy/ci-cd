@@ -1,0 +1,14 @@
+sudo: required
+language: generic
+
+#items to install
+services:
+    -docker
+
+before_install:
+    -docker build -it ahy94/docker-react
+
+#Contains all the commands that needs to be ran to run our test suite
+#If a return code returns a status code other than 0, then travis will assume that the test failed
+script:
+    - docker run -e CI=true ahy94/docker-react npm run test
